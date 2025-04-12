@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.Account;
 import com.example.exception.DuplicateUsernameException;
+import com.example.exception.InvalidLoginException;
 import com.example.exception.InvalidRegistrationException;
 import com.example.service.AccountService;
 
@@ -47,5 +48,17 @@ public class SocialMediaController {
         }
         //end register user
 
+        //login
+        @PostMapping("/login")
+        public ResponseEntity<?> login(@RequestBody Account account){
+                Account loggedAccount = accountService.login(account);
+                return ResponseEntity.ok(loggedAccount);
+        }
+
+        @ExceptionHandler(InvalidLoginException.class)
+        public ResponseEntity<String> handleInvalidLogin(InvalidLoginException ex){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+        }
+        //login end
 
 }
