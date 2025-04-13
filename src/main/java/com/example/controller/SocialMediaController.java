@@ -3,6 +3,7 @@ package com.example.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -95,5 +96,16 @@ public class SocialMediaController {
         public ResponseEntity<Message> getMessageByID(@PathVariable int messageId){
                 Optional<Message> message = messageService.getMessageByID(messageId);
                 return message.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.ok().build());
+        }
+
+        //delete by id
+        @DeleteMapping("/messages/{messageId}")
+        public ResponseEntity<Integer> deleteMessageByID(@PathVariable int messageId){
+                int deletedCount = messageService.deleteMessageByID(messageId);
+                if (deletedCount == 1) {
+                        return ResponseEntity.ok(deletedCount);
+                } else {
+                        return ResponseEntity.ok().build();
+                }
         }
 }
