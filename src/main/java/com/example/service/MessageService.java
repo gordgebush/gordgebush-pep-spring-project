@@ -38,4 +38,8 @@ public class MessageService {
     public List<Message> getAlMessages(){
         return messageRepository.findAll();
     }
+
+    public Optional<Message> getMessageByID(int id){
+        return messageRepository.findById(id);
+    }
 }
