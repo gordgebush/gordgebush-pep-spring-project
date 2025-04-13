@@ -50,4 +50,20 @@ public class MessageService {
         }
         return 0;
     }   
+
+    public int updateMessage(int messageId, String text){
+        Optional<Message> opMessage = messageRepository.findById(messageId);
+        if(opMessage.isPresent() && text != null && !text.isBlank() && text.length() < 255){
+            Message message = opMessage.get();
+            message.setMessageText(text);
+            messageRepository.save(message);
+            return 1;
+        }
+        return 0;
+    }
+
+    public List<Message> getMessagesByAccount(int accountId){
+        return messageRepository.findByPostedBy(accountId);
+    }
+
 }

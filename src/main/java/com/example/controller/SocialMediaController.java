@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -108,4 +109,24 @@ public class SocialMediaController {
                         return ResponseEntity.ok().build();
                 }
         }
+
+        //update message
+        @PatchMapping("/messages/{messageId}")
+        public ResponseEntity<Integer> updateMessage(@PathVariable int messageId,@RequestBody Message text) {
+        int updatedCount = messageService.updateMessage(messageId, text.getMessageText());
+
+                if (updatedCount == 1) {
+                        return ResponseEntity.ok(1);
+                } else {
+                        return ResponseEntity.badRequest().build();
+                }
+        }
+        
+        //get all messages from user
+        @GetMapping("/accounts/{accountId}/messages")
+        public ResponseEntity<List<Message>> getMessagesByAccount(@PathVariable int accountId) {
+        List<Message> messages = messageService.getMessagesByAccount(accountId);
+        return ResponseEntity.ok(messages); 
+        }
+
 }
